@@ -84,6 +84,8 @@ perf_test.elf: $(OBJS)
 
 # 改 gpu_config.lua (perf 开关) 后自动重编 engine.c
 core/engine.o: gpu_config.lua
+# native.c 用 AVX2+FMA intrinsic (-mavx2 不隐含 -mfma)
+tests/native.o: CFLAGS += -mfma
 # RVV handler 池中未分配 dispatch 条目的 label 产生 -Wunused-label,
 # 加 decode 字段后自动消除。暂时局部关闭 warning。
 core/engine.o: LIB_CFLAGS += -Wno-unused-label -Wno-unused-variable -Wno-type-limits
